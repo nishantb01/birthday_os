@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Princess</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@400;600&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Animations and Glassmorphism */
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden; /* Prevent scrolling on the desktop */
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .wallpaper {
+            /* Birthday Theme - Soft Pinks, Confetti colors */
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #feada6, #f5efef, #a18cd1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism Window */
+        .window {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, opacity 0.2s, width 0.2s, height 0.2s;
+            transform-origin: center;
+        }
+
+        .window.closed {
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .window-header {
+            cursor: grab;
+            background: rgba(255, 255, 255, 0.6);
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            flex-shrink: 0;
+        }
+        
+        .window-header:active {
+            cursor: grabbing;
+        }
+
+        /* Desktop Icons */
+        .desktop-icon {
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 12px;
+        }
+        .desktop-icon:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+        }
+        .desktop-icon:active {
+            transform: scale(0.95);
+        }
+
+        /* Photo File Icon Style - Polaroids */
+        .photo-icon-frame {
+            background: white;
+            padding: 4px;
+            padding-bottom: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        .desktop-icon:hover .photo-icon-frame {
+            z-index: 10;
+        }
+
+        /* Boot Screen */
+        #boot-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff0f5; /* Lavender Blush */
+            color: #555;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-out;
+        }
+
+        /* Specific Fonts */
+        .font-script {
+            font-family: 'Great Vibes', cursive;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-mono-term {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Scrollbar */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        /* Floating Rings/Hearts Animation */
+        .floating-bg {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.4);
+            animation: float 8s linear infinite;
+            bottom: -50px;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Start Menu */
+        #start-menu {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+            transform-origin: bottom left;
+        }
+        #start-menu.hidden-menu {
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Music Bars Animation */
+        .music-bar {
+            width: 4px;
+            background: #d4a5a5;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { height: 10px; }
+            50% { height: 25px; }
+        }
+        .music-bar:nth-child(2) { animation-delay: 0.2s; }
+        .music-bar:nth-child(3) { animation-delay: 0.4s; }
+        .music-bar:nth-child(4) { animation-delay: 0.1s; }
+
+        /* Fade In for Surprise */
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden text-gray-800">
+
+    <!-- Audio Element (Hidden) -->
+    <!-- Using a gentle piano piece -->
+    <audio id="audio-player" loop>
+        <source src="./FAASLE(KoshalWorld.Com).mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Boot Screen -->
+    <div id="boot-screen">
+        <div class="relative">
+            <i class="fa-solid fa-cake-candles text-6xl text-pink-400 animate-bounce mb-4"></i>
+            <i class="fa-solid fa-star text-2xl text-yellow-300 absolute -top-2 -right-2 animate-pulse"></i>
+        </div>
+        <h1 class="text-4xl font-serif text-pink-900 mb-2">Birthday OS</h1>
+        <p class="text-md text-pink-500 font-script text-2xl">Preparing surprises...</p>
+        <div class="w-64 h-1 bg-pink-100 mt-8 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-gradient-to-r from-pink-300 to-pink-500 w-0 transition-all duration-[2500ms]"></div>
+        </div>
+    </div>
+
+    <!-- Animated Wallpaper -->
+    <div class="wallpaper" id="wallpaper-container"></div>
+
+    <!-- Desktop Container -->
+    <!-- Grid Optimized for Mobile (gap-2, p-2) vs Desktop (gap-6, p-4) -->
+    <main class="relative z-10 w-full h-full p-2 sm:p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-6 grid-rows-[auto_1fr] content-start">
+        
+        <!-- App: Our Story (Timeline) -->
+        <div onclick="openWindow('window-story')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 text-white text-shadow-lg group">
+            <div class="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center shadow-lg relative mb-2 group-hover:-translate-y-1 transition">
+                <i class="fa-solid fa-heart text-pink-500 text-3xl"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Our Story</span>
+        </div>
+
+        <!-- App: Gallery -->
+        <div onclick="openWindow('window-gallery')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-2 relative overflow-hidden group-hover:-translate-y-1 transition border-2 border-white">
+                <img src="couple.webp" class="w-full h-full object-cover" alt="Icon">
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Memories</span>
+        </div>
+
+        <!-- App: Birthday Letter -->
+        <div onclick="openWindow('window-letter')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-2 text-pink-500 group-hover:-translate-y-1 transition">
+                <i class="fa-solid fa-envelope-open-text text-3xl text-red-500"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Open Me First</span>
+        </div>
+
+        <!-- App: Birthday Music -->
+        <div onclick="openWindow('window-music')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center shadow-lg mb-2 text-purple-500 group-hover:-translate-y-1 transition">
+                <i class="fa-solid fa-music text-3xl"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Birthday Beats</span>
+        </div>
+        
+        <!-- App: The Next Chapter (SURPRISE) -->
+        <div onclick="openWindow('window-browser')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shadow-lg mb-2 group-hover:-translate-y-1 transition">
+                <i class="fa-solid fa-gift text-blue-400 text-3xl"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Surprise?</span>
+        </div>
+
+        <!-- App: Love Terminal -->
+        <div onclick="openWindow('window-terminal')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="w-14 h-14 bg-gray-800 rounded-2xl flex items-center justify-center shadow-lg mb-2 border border-gray-600 group-hover:-translate-y-1 transition">
+                <i class="fa-solid fa-heart text-pink-400 text-2xl"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Love.exe</span>
+        </div>
+
+        <!-- App: Birthday Date (Calendar) -->
+        <div onclick="openWindow('window-calendar')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+             <div class="w-14 h-14 bg-white rounded-2xl flex flex-col items-center shadow-lg mb-2 overflow-hidden group-hover:-translate-y-1 transition">
+                <div class="w-full h-5 bg-pink-500 flex items-center justify-center">
+                    <span class="text-[10px] text-white font-bold tracking-widest">TODAY</span>
+                </div>
+                <span class="text-gray-800 font-serif font-bold text-xl leading-none mt-1">26</span>
+                <span class="text-gray-400 text-[9px] font-bold">NOV</span>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">The Big Day</span>
+        </div>
+
+        <!-- App: Wishes (Bucket List) -->
+        <div onclick="openWindow('window-bucket')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center shadow-lg relative mb-2 group-hover:-translate-y-1 transition">
+                <i class="fa-solid fa-wand-magic-sparkles text-yellow-500 text-3xl"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Wishes</span>
+        </div>
+
+        <!-- App: Love Gifts (Coupons) -->
+        <div onclick="openWindow('window-coupons')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center shadow-lg relative mb-2 group-hover:-translate-y-1 transition">
+                <i class="fa-solid fa-ticket text-red-500 text-3xl"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Your Gifts</span>
+        </div>
+
+        <!-- App: Our Home (Map) -->
+        <div onclick="openWindow('window-map')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+             <div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center shadow-lg mb-2 group-hover:-translate-y-1 transition">
+                <i class="fa-solid fa-earth-americas text-green-600 text-3xl"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Our World</span>
+        </div>
+
+         <!-- App: Settings -->
+         <div onclick="openWindow('window-settings')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="w-14 h-14 bg-gray-200 rounded-2xl flex items-center justify-center shadow-lg mb-2 group-hover:-translate-y-1 transition">
+               <i class="fa-solid fa-gear text-gray-500 text-3xl"></i>
+           </div>
+           <span class="text-xs sm:text-sm font-semibold text-pink-900 drop-shadow-sm font-serif leading-tight">Settings</span>
+       </div>
+
+        <!-- File: Image 1 (Moved to grid) -->
+        <div onclick="openWindow('window-image-1')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="photo-icon-frame w-16 h-20 mb-1 transform rotate-6 group-hover:rotate-0 transition duration-300">
+                <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=150&auto=format&fit=crop" class="w-full h-full object-cover border border-gray-100">
+            </div>
+            <span class="text-xs sm:text-sm font-bold text-pink-900 font-script text-lg leading-tight">Cute Us</span>
+        </div>
+        
+        <!-- File: Image 2 (Moved to grid) -->
+        <div onclick="openWindow('window-image-2')" class="desktop-icon p-2 cursor-pointer h-24 sm:h-28 group">
+            <div class="photo-icon-frame w-16 h-20 mb-1 transform -rotate-3 group-hover:rotate-0 transition duration-300">
+                <img src="couple.webp" class="w-full h-full object-cover border border-gray-100">
+            </div>
+            <span class="text-xs sm:text-sm font-bold text-pink-900 font-script text-lg leading-tight">Party Time</span>
+        </div>
+
+    </main>
+
+    <!-- ================= WINDOWS ================= -->
+    <!-- Note: All windows now use left-1/2 -translate-x-1/2 for perfect mobile centering, then reset on md: screens -->
+
+    <!-- WINDOW: Our Story -->
+    <div id="window-story" class="window closed w-11/12 md:w-[600px] h-[70%] md:h-[500px] top-10 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-10 z-20">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-book-open text-pink-500"></i>
+                <span class="font-serif font-bold text-gray-700">Our Story So Far</span>
+            </div>
+            <button onclick="closeWindow('window-story')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-8 bg-white/60 custom-scroll">
+            <div class="space-y-8 border-l-2 border-pink-200 pl-6 ml-2">
+                <!-- Event 1 -->
+                <div class="relative group">
+                    <div class="absolute -left-[33px] top-1 w-4 h-4 bg-white border-4 border-pink-400 rounded-full group-hover:scale-125 transition"></div>
+                    <h3 class="font-serif font-bold text-xl text-gray-800">The Day We Met</h3>
+                    <p class="text-sm text-gray-500 italic mb-1">The beginning...</p>
+                    <p class="text-gray-700">I knew you were special the moment I saw you.</p>
+                </div>
+                <!-- Event 2 -->
+                <div class="relative group">
+                    <div class="absolute -left-[33px] top-1 w-4 h-4 bg-white border-4 border-pink-400 rounded-full group-hover:scale-125 transition"></div>
+                    <h3 class="font-serif font-bold text-xl text-gray-800">First Date ❤️</h3>
+                    <p class="text-sm text-gray-500 italic mb-1">Butterflies</p>
+                    <p class="text-gray-700">The best date of my life. I didn't want it to end.</p>
+                </div>
+                 <!-- Event 3 -->
+                 <div class="relative group">
+                    <div class="absolute -left-[33px] top-1 w-4 h-4 bg-white border-4 border-pink-400 rounded-full group-hover:scale-125 transition"></div>
+                    <h3 class="font-serif font-bold text-xl text-gray-800">Becoming "Us"</h3>
+                    <p class="text-sm text-gray-500 italic mb-1">Official</p>
+                    <p class="text-gray-700">Asking you to be my girlfriend was the best decision I've ever made.</p>
+                </div>
+                <!-- Event 4 -->
+                <div class="relative group">
+                    <div class="absolute -left-[33px] top-1 w-4 h-4 bg-pink-500 border-4 border-pink-200 rounded-full animate-pulse"></div>
+                    <h3 class="font-serif font-bold text-2xl text-pink-600">Happy Birthday! 🎂</h3>
+                    <p class="text-sm text-gray-500 italic mb-1">Today</p>
+                    <p class="text-gray-700">Celebrating the most beautiful girl in the world. I love you!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Gallery -->
+    <div id="window-gallery" class="window closed w-11/12 md:w-[700px] h-[80%] md:h-[550px] top-4 md:top-16 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-20 z-30">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-images text-purple-500"></i>
+                <span class="font-serif font-bold text-gray-700">Sweet Memories</span>
+            </div>
+             <button onclick="closeWindow('window-gallery')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6 bg-gray-50/50 custom-scroll">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <div class="group relative aspect-[3/4] bg-gray-200 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition duration-500">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover transition transform duration-700 group-hover:scale-110" alt="Love">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+                        <span class="text-white font-serif">Us</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-[3/4] bg-gray-200 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition duration-500">
+                    <img src="couple.webp" class="w-full h-full object-cover transition transform duration-700 group-hover:scale-110" alt="Kiss">
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+                        <span class="text-white font-serif">Kisses</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-[3/4] bg-gray-200 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition duration-500">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover transition transform duration-700 group-hover:scale-110" alt="Hands">
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+                        <span class="text-white font-serif">Always</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-[3/4] bg-gray-200 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition duration-500">
+                    <img src="memory.webp" class="w-full h-full object-cover transition transform duration-700 group-hover:scale-110" alt="Vacation">
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+                        <span class="text-white font-serif">Adventures</span>
+                    </div>
+                </div>
+                 <div class="group relative aspect-[3/4] bg-gray-200 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition duration-500">
+                    <img src="couple.webp" class="w-full h-full object-cover transition transform duration-700 group-hover:scale-110" alt="Party">
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-4">
+                        <span class="text-white font-serif">Celebration</span>
+                    </div>
+                </div>
+                <div class="group relative aspect-[3/4] bg-gray-200 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition duration-500 bg-pink-50 flex items-center justify-center">
+                    <div class="text-center p-2">
+                        <i class="fa-solid fa-plus text-3xl text-pink-300 mb-2"></i>
+                        <p class="text-sm text-pink-400 font-serif">Add more later...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Birthday Letter -->
+    <div id="window-letter" class="window closed w-11/12 md:w-[500px] h-[60%] md:h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-heart text-red-500"></i>
+                <span class="font-serif font-bold text-gray-700">To_The_Birthday_Girl.txt</span>
+            </div>
+             <button onclick="closeWindow('window-letter')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex-1 p-8 bg-[#fffdf0] overflow-y-auto relative">
+             <!-- Paper texture overlay -->
+             <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 20px 20px;"></div>
+             
+            <div class="font-script text-3xl text-gray-800 leading-relaxed">
+                Happy Birthday, My Love!<br><br>
+                To the girl who lights up my world, I hope your day is as beautiful and amazing as you are.<br><br>
+                Every moment with you is a treasure, and I'm so grateful to celebrate another year of your life. You deserve all the happiness in the universe.<br><br>
+                I can't wait to make more memories with you. Get ready for some surprises!<br><br>
+                Forever yours,<br>
+                Your Boyfriend
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Music Player -->
+    <div id="window-music" class="window closed w-11/12 md:w-[380px] h-auto top-10 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-20 md:left-1/3 z-30">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-music text-pink-500"></i>
+                <span class="font-serif font-bold text-gray-700">Birthday Jam</span>
+            </div>
+            <button onclick="closeWindow('window-music')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="bg-gradient-to-br from-purple-900 via-pink-800 to-slate-900 text-white p-8 flex flex-col items-center rounded-b-xl relative overflow-hidden">
+            <!-- Vinyl Record Animation -->
+            <div class="w-56 h-56 bg-black rounded-full shadow-2xl mb-8 flex items-center justify-center relative animate-spin-slow" style="animation-duration: 8s; animation-play-state: paused;" id="record-disk">
+                <div class="absolute inset-0 rounded-full border-4 border-gray-800 opacity-50"></div>
+                <div class="absolute inset-4 rounded-full border border-gray-800 opacity-50"></div>
+                <div class="absolute inset-8 rounded-full border border-gray-800 opacity-50"></div>
+                <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=300&auto=format&fit=crop" class="w-24 h-24 rounded-full object-cover border-4 border-pink-500" alt="Album Art">
+            </div>
+            
+            <h3 class="font-serif font-bold text-2xl text-pink-100">Happy Birthday</h3>
+            <p class="text-sm text-pink-300 mb-6">Faasle (aditya rikhari)</p>
+            
+            <!-- Controls -->
+            <div class="flex items-center gap-8 text-3xl">
+                <i class="fa-solid fa-backward-step cursor-pointer text-white/50 hover:text-white transition"></i>
+                <div onclick="toggleMusic()" class="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center text-white cursor-pointer hover:scale-105 transition shadow-lg shadow-pink-500/50">
+                    <i id="play-icon" class="fa-solid fa-play ml-1"></i>
+                </div>
+                <i class="fa-solid fa-forward-step cursor-pointer text-white/50 hover:text-white transition"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- WINDOW: Browser (Future/Surprise) -->
+    <div id="window-browser" class="window closed w-11/12 md:w-[600px] h-[400px] top-10 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-32 md:left-32 z-30">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+             <div class="flex items-center gap-2 text-xs text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full w-2/3 truncate border border-gray-200">
+                <i class="fa-solid fa-lock text-green-500"></i>
+                <span>https://birthday-surprise.com</span>
+            </div>
+            <button onclick="closeWindow('window-browser')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex-1 bg-white flex flex-col items-center justify-center p-8 text-center relative overflow-hidden">
+             <!-- Initial View -->
+             <div id="surprise-initial" class="flex flex-col items-center transition-all duration-500">
+                 <div class="text-7xl text-blue-200 mb-6 animate-bounce">
+                     <i class="fa-solid fa-gift"></i>
+                 </div>
+                 <h2 class="text-3xl font-serif font-bold mb-3 text-gray-800">Guess what?</h2>
+                 <p class="text-gray-500 mb-8 max-w-md">I have a special surprise planned just for you. Are you ready to see it?</p>
+                 <button onclick="revealSurprise()" class="bg-blue-500 text-white px-8 py-3 rounded-full hover:bg-blue-600 transition shadow-lg transform hover:-translate-y-1 font-bold">Reveal Surprise</button>
+             </div>
+
+             <!-- Revealed View (Hidden by default) -->
+             <div id="surprise-reveal" class="hidden flex flex-col items-center animate-fade-in">
+                <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=400&auto=format&fit=crop" class="w-64 h-40 object-cover rounded-lg shadow-lg mb-4 rotate-2 hover:rotate-0 transition">
+                <h2 class="text-2xl font-serif font-bold text-pink-600 mb-2">We are going to Switzerland! ✈️</h2>
+                <p class="text-gray-600 max-w-md">Pack your bags, princess! A weekend getaway awaits us.</p>
+                <div class="mt-4 flex gap-2">
+                    <span class="text-2xl">🏔️</span><span class="text-2xl">🍫</span><span class="text-2xl">❄️</span>
+                </div>
+             </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Terminal -->
+    <div id="window-terminal" class="window closed w-11/12 md:w-[600px] h-[350px] top-10 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-20 md:left-20 z-30 bg-[#1e1e1e] border-gray-700">
+        <div class="window-header h-10 flex items-center justify-between px-3 bg-[#2d2d2d] border-b border-gray-700">
+            <div class="flex items-center gap-2 text-xs text-gray-400">
+                <i class="fa-solid fa-terminal"></i>
+                <span>Love.exe - Admin</span>
+            </div>
+            <button onclick="closeWindow('window-terminal')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="flex-1 p-4 overflow-y-auto custom-scroll font-mono-term text-pink-400 text-sm" id="terminal-content" onclick="document.getElementById('term-input').focus()">
+            <div class="mb-4 text-gray-300">
+                <p>Birthday OS [Version 25.0]</p>
+                <p>(c) Boyfriend Inc.</p>
+                <p class="mt-2">Type <span class="text-white">'help'</span> to explore.</p>
+            </div>
+            <div id="terminal-history"></div>
+            <div class="flex items-center mt-2">
+                <span class="mr-2 text-pink-500">BdayGirl@Home:~$</span>
+                <input type="text" id="term-input" class="flex-1 bg-transparent border-none outline-none text-white font-mono-term" autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Calendar -->
+    <div id="window-calendar" class="window closed w-11/12 md:w-[400px] h-auto top-20 left-1/2 -translate-x-1/2 z-30">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <i class="fa-regular fa-calendar-check text-pink-500"></i>
+                <span class="font-serif font-bold text-gray-700">Important Date</span>
+            </div>
+            <button onclick="closeWindow('window-calendar')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="p-6 bg-white rounded-b-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-serif font-bold text-xl text-gray-800">November 2025</h3>
+            </div>
+            <div class="grid grid-cols-7 gap-3 text-center text-sm mb-4 font-bold text-gray-400">
+                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+            </div>
+            <div class="grid grid-cols-7 gap-3 text-center text-sm font-medium text-gray-600">
+                <span class="opacity-30">26</span><span class="opacity-30">27</span><span class="opacity-30">28</span><span class="opacity-30">29</span><span class="opacity-30">30</span><span class="opacity-30">31</span>
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span>
+                
+                <!-- The Birthday Date -->
+                <span class="bg-pink-500 text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto shadow-lg shadow-pink-300 ring-2 ring-pink-200 animate-bounce">26</span>
+                
+                <span>27</span><span>28</span><span>29</span><span>30</span>
+            </div>
+            <div class="mt-6 border-t border-gray-100 pt-4">
+                <div class="flex items-center gap-4 p-3 bg-pink-50 rounded-xl">
+                    <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center text-pink-600">
+                        <i class="fa-solid fa-cake-candles"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-sm text-gray-800">Her Birthday! 🎉</p>
+                        <p class="text-xs text-gray-500">Party starts at 7:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Wishes (Bucket List) -->
+    <div id="window-bucket" class="window closed w-11/12 md:w-[400px] h-[500px] top-16 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-40 z-20">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-wand-magic-sparkles text-yellow-500"></i>
+                <span class="font-serif font-bold text-gray-700">My Wishes for You</span>
+            </div>
+            <button onclick="closeWindow('window-bucket')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6 bg-[#fffbf0] custom-scroll">
+            <h2 class="text-xl font-serif font-bold mb-4 text-gray-800">To Do List</h2>
+            <div class="space-y-3">
+                <div class="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm border border-yellow-100">
+                    <input type="checkbox" class="w-5 h-5 accent-yellow-500 rounded cursor-pointer">
+                    <span class="text-gray-800">Eat lots of Cake 🍰</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm border border-yellow-100">
+                    <input type="checkbox" class="w-5 h-5 accent-yellow-500 rounded cursor-pointer">
+                    <span class="text-gray-800">Open Presents 🎁</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm border border-yellow-100">
+                    <input type="checkbox" class="w-5 h-5 accent-yellow-500 rounded cursor-pointer">
+                    <span class="text-gray-800">Make a Wish 🌠</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm border border-yellow-100">
+                    <input type="checkbox" class="w-5 h-5 accent-yellow-500 rounded cursor-pointer">
+                    <span class="text-gray-800">Go on a Date ❤️</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm border border-yellow-100">
+                    <input type="checkbox" class="w-5 h-5 accent-yellow-500 rounded cursor-pointer">
+                    <span class="text-gray-800">Be Happy Always 😊</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Love Coupons (Gifts) -->
+    <div id="window-coupons" class="window closed w-11/12 md:w-[600px] h-[500px] top-12 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-32 z-30">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-gift text-red-500"></i>
+                <span class="font-serif font-bold text-gray-700">Birthday Coupons</span>
+            </div>
+            <button onclick="closeWindow('window-coupons')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6 bg-pink-50 custom-scroll">
+            <p class="text-center text-gray-500 mb-6 font-serif italic">Redeemable anytime!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Coupon 1 -->
+                <div class="bg-white border border-pink-100 p-6 rounded-xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-pink-400"></div>
+                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-pink-500 text-2xl mb-3 group-hover:bg-pink-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-spa"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800">Back Massage</h3>
+                    <p class="text-sm text-gray-500">Whenever you need to relax.</p>
+                </div>
+                <!-- Coupon 2 -->
+                <div class="bg-white border border-pink-100 p-6 rounded-xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer relative overflow-hidden group">
+                     <div class="absolute top-0 left-0 w-full h-1 bg-pink-400"></div>
+                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-pink-500 text-2xl mb-3 group-hover:bg-pink-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800">Dinner Date</h3>
+                    <p class="text-sm text-gray-500">My treat, your choice of place.</p>
+                </div>
+                <!-- Coupon 3 -->
+                <div class="bg-white border border-pink-100 p-6 rounded-xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer relative overflow-hidden group">
+                     <div class="absolute top-0 left-0 w-full h-1 bg-pink-400"></div>
+                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-pink-500 text-2xl mb-3 group-hover:bg-pink-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800">Shopping Spree</h3>
+                    <p class="text-sm text-gray-500">Let's go buy you something nice.</p>
+                </div>
+                <!-- Coupon 4 -->
+                <div class="bg-white border border-pink-100 p-6 rounded-xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition cursor-pointer relative overflow-hidden group">
+                     <div class="absolute top-0 left-0 w-full h-1 bg-pink-400"></div>
+                    <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center text-pink-500 text-2xl mb-3 group-hover:bg-pink-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800">"Yes" Day</h3>
+                    <p class="text-sm text-gray-500">I say yes to everything for 24h.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- WINDOW: Map -->
+     <div id="window-map" class="window closed w-11/12 md:w-[500px] h-[300px] top-24 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-1/2 z-30">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-house-user text-green-500"></i>
+                <span class="font-serif font-bold text-gray-700">Where You Are</span>
+            </div>
+            <button onclick="closeWindow('window-map')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex-1 bg-gray-200 relative overflow-hidden">
+            <!-- Simulated Map -->
+            <img src="./home.webp" class="w-full h-full object-cover opacity-90" alt="Home">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <i class="fa-solid fa-location-dot text-pink-500 text-5xl drop-shadow-lg animate-bounce"></i>
+            </div>
+            <div class="absolute bottom-4 left-4 bg-white/95 px-4 py-2 rounded-lg shadow-lg">
+                <p class="text-xs text-gray-500 uppercase font-bold tracking-wider">Center of my Universe</p>
+                <p class="font-serif font-bold text-gray-800">Right Here ❤️</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Settings -->
+    <div id="window-settings" class="window closed w-11/12 md:w-[300px] h-auto top-20 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-10 z-50">
+        <div class="window-header h-12 flex items-center justify-between px-4 border-b border-gray-200">
+            <span class="font-serif font-bold text-gray-700">Settings</span>
+            <button onclick="closeWindow('window-settings')" class="text-gray-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="p-4 bg-gray-50 rounded-b-xl">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-sm font-medium text-gray-600">Theme</span>
+                <span class="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded">Birthday Pink</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Party Mode</span>
+                <div class="w-20 h-1 bg-gray-300 rounded-full overflow-hidden">
+                    <div class="w-3/4 h-full bg-pink-500"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW: Image 1 Viewer -->
+    <div id="window-image-1" class="window closed w-11/12 md:w-auto h-auto top-10 left-1/2 -translate-x-1/2 z-50 p-2 bg-white shadow-2xl">
+        <div class="window-header h-8 flex justify-end px-2 bg-transparent border-none">
+            <button onclick="closeWindow('window-image-1')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="p-2 pb-6 bg-white">
+            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=400&auto=format&fit=crop" class="max-w-full max-h-[60vh] object-cover border border-gray-100">
+            <p class="text-center font-script text-3xl mt-4 text-gray-800">Just us being cute</p>
+        </div>
+    </div>
+
+     <!-- WINDOW: Image 2 Viewer -->
+     <div id="window-image-2" class="window closed w-11/12 md:w-auto h-auto top-12 left-1/2 -translate-x-1/2 z-50 p-2 bg-white shadow-2xl">
+        <div class="window-header h-8 flex justify-end px-2 bg-transparent border-none">
+            <button onclick="closeWindow('window-image-2')" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="p-2 pb-6 bg-white">
+            <img src="couple.webp" class="max-w-full max-h-[60vh] object-cover border border-gray-100">
+            <p class="text-center font-script text-3xl mt-4 text-gray-800">Let's Party!</p>
+        </div>
+    </div>
+
+
+    <!-- Start Menu (Hidden) -->
+    <!-- Max width adjusted for mobile to prevent overflow -->
+    <div id="start-menu" class="hidden-menu fixed bottom-16 left-2 w-[calc(100vw-16px)] max-w-xs bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 z-50 p-4">
+        <div class="flex items-center gap-4 p-2 mb-2 border-b border-gray-100 pb-4">
+            <div class="w-12 h-12 bg-gradient-to-tr from-pink-400 to-purple-300 rounded-full flex items-center justify-center text-white text-xl shadow-lg">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div>
+                <p class="font-bold text-gray-800">Boyfriend</p>
+                <p class="text-xs text-pink-500">Logged in as Admin</p>
+            </div>
+        </div>
+        <div class="space-y-1">
+            <div onclick="openWindow('window-story')" class="p-3 hover:bg-pink-50 rounded-xl cursor-pointer flex items-center gap-4 text-sm text-gray-700 transition">
+                <i class="fa-solid fa-heart text-pink-400"></i> Our Story
+            </div>
+            <div onclick="openWindow('window-gallery')" class="p-3 hover:bg-pink-50 rounded-xl cursor-pointer flex items-center gap-4 text-sm text-gray-700 transition">
+                <i class="fa-solid fa-camera-retro text-purple-400"></i> Memories
+            </div>
+            <div onclick="openWindow('window-settings')" class="p-3 hover:bg-pink-50 rounded-xl cursor-pointer flex items-center gap-4 text-sm text-gray-700 transition">
+                <i class="fa-solid fa-sliders text-gray-400"></i> Adjustments
+            </div>
+            <div class="p-3 hover:bg-red-50 rounded-xl cursor-pointer flex items-center gap-4 text-sm text-red-500 transition mt-2">
+                <i class="fa-solid fa-power-off"></i> Sleep Mode
+            </div>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="fixed bottom-0 left-0 w-full h-14 bg-white/70 backdrop-blur-xl border-t border-white/40 flex items-center justify-between px-6 z-50 shadow-lg">
+        <div class="flex items-center gap-6">
+            <!-- Start Button -->
+            <div onclick="toggleStartMenu()" class="w-10 h-10 bg-gradient-to-tr from-pink-400 to-purple-400 rounded-xl flex items-center justify-center text-white cursor-pointer hover:shadow-lg hover:scale-105 transition duration-300" title="Start">
+                <i class="fa-solid fa-cake-candles"></i>
+            </div>
+            <!-- Search -->
+            <div class="hidden md:flex items-center bg-white/50 px-4 py-2 rounded-full w-64 text-sm text-gray-600 border border-white/50 focus-within:bg-white transition shadow-inner">
+                <i class="fa-solid fa-magnifying-glass mr-3 text-pink-300"></i>
+                <input type="text" placeholder="Search for gifts..." class="bg-transparent border-none outline-none w-full placeholder-gray-400 font-medium">
+            </div>
+        </div>
+
+        <!-- Clock -->
+        <div class="flex flex-col items-end text-right">
+            <span id="clock-time" class="text-sm font-bold text-gray-800">12:00 PM</span>
+            <span id="clock-date" class="text-xs text-pink-600 font-medium">Nov 26, 2025</span>
+        </div>
+    </div>
+
+    <script>
+        // --- Boot Sequence ---
+        window.onload = () => {
+            const bootScreen = document.getElementById('boot-screen');
+            const progressBar = document.getElementById('progress-bar');
+            
+            setTimeout(() => { progressBar.style.width = "100%"; }, 100);
+
+            setTimeout(() => {
+                bootScreen.style.opacity = '0';
+                setTimeout(() => {
+                    bootScreen.style.display = 'none';
+                    generateFloatingIcons();
+                }, 1000);
+            }, 3000);
+
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            document.getElementById('term-input').addEventListener('keydown', handleTerminalCommand);
+        };
+
+        // --- Window Management ---
+        let highestZ = 100;
+
+        function openWindow(id) {
+            const win = document.getElementById(id);
+            if (!win) return;
+            
+            highestZ++;
+            win.style.zIndex = highestZ;
+            win.classList.remove('closed');
+            
+            // Close start menu if open
+            document.getElementById('start-menu').classList.add('hidden-menu');
+            
+            if(id === 'window-terminal') {
+                setTimeout(() => document.getElementById('term-input').focus(), 100);
+            }
+        }
+
+        function closeWindow(id) {
+            document.getElementById(id).classList.add('closed');
+        }
+
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            menu.classList.toggle('hidden-menu');
+            highestZ++;
+            menu.style.zIndex = highestZ + 1;
+        }
+
+        // --- Music Player Logic ---
+        const audio = document.getElementById('audio-player');
+        const playIcon = document.getElementById('play-icon');
+        const recordDisk = document.getElementById('record-disk');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+                recordDisk.style.animationPlayState = 'paused';
+            } else {
+                audio.play();
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+                recordDisk.style.animationPlayState = 'running';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function revealSurprise() {
+            document.getElementById('surprise-initial').style.display = 'none';
+            const reveal = document.getElementById('surprise-reveal');
+            reveal.classList.remove('hidden');
+        }
+
+        // --- Dragging Logic ---
+        const windows = document.querySelectorAll('.window');
+        windows.forEach(win => {
+            const header = win.querySelector('.window-header');
+            if(header) makeDraggable(win, header);
+            
+            win.addEventListener('mousedown', () => {
+                highestZ++;
+                win.style.zIndex = highestZ;
+            });
+        });
+
+        function makeDraggable(element, handle) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            handle.onmousedown = dragMouseDown;
+            handle.ontouchstart = dragTouchStart;
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+
+            function dragTouchStart(e) {
+                pos3 = e.touches[0].clientX;
+                pos4 = e.touches[0].clientY;
+                document.ontouchend = closeDragElement;
+                document.ontouchmove = elementTouchDrag;
+            }
+
+            function elementTouchDrag(e) {
+                pos1 = pos3 - e.touches[0].clientX;
+                pos2 = pos4 - e.touches[0].clientY;
+                pos3 = e.touches[0].clientX;
+                pos4 = e.touches[0].clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+        }
+
+        // --- Utils ---
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock-time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('clock-date').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        function generateFloatingIcons() {
+            const container = document.getElementById('wallpaper-container');
+            const icons = ['fa-heart', 'fa-cake-candles', 'fa-gift', 'fa-star'];
+            const count = window.innerWidth < 768 ? 6 : 12;
+
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                el.classList.add('floating-bg', 'fa-solid', randomIcon);
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.fontSize = (Math.random() * 30 + 10) + 'px';
+                el.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                el.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(el);
+            }
+        }
+        
+        function handleTerminalCommand(e) {
+            if (e.key === 'Enter') {
+                const input = e.target;
+                const cmd = input.value.trim().toLowerCase();
+                const history = document.getElementById('terminal-history');
+                const cmdLine = document.createElement('div');
+                cmdLine.innerHTML = `<span class="text-pink-500">BdayGirl@Home:~$</span> <span class="text-white">${input.value}</span>`;
+                history.appendChild(cmdLine);
+                
+                let response = "";
+                switch(cmd) {
+                    case 'help': response = "Commands: <br> - wish: See my wish for you<br> - cake: Get virtual cake<br> - gift: Reveal hint<br> - love: Measure affection<br> - clear: Clean screen"; break;
+                    case 'wish': response = "I wish you all the happiness, laughter, and love in the world. Happy Birthday! ✨"; break;
+                    case 'cake': response = "Here is your virtual cake! 🎂 Make a wish!"; break;
+                    case 'gift': response = "Your real gift is hidden... check the 'Your Gifts' app!"; break;
+                    case 'love': response = "Calculating... <br>Result: <span class='text-pink-400'>Infinite amount. Stack overflow error. ❤️</span>"; break;
+                    case 'clear': history.innerHTML = ""; input.value = ""; return;
+                    default: if(cmd !== "") response = "Command not found. Try 'help'.";
+                }
+                
+                if(response) {
+                    const respLine = document.createElement('div');
+                    respLine.className = "mb-2 text-gray-400";
+                    respLine.innerHTML = response;
+                    history.appendChild(respLine);
+                }
+                input.value = "";
+                document.getElementById('terminal-content').scrollTop = 9999;
+            }
+        }
+    </script>
+</body>
+</html>
